@@ -31,3 +31,21 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Environment Variables ###
+# IMPORTANT: Never commit .env files with sensitive data
+.env
+.env.local
+.env.*.local
+
+### Logs ###
+*.log
+logs/
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+
+### Docker ###
+docker/redis/*.conf.backup
+docker/redis/nodes-*.conf
