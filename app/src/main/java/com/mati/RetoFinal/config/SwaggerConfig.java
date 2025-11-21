@@ -11,7 +11,7 @@ import io.swagger.v3.oas.models.info.License;
 public class SwaggerConfig {
     
     @Bean
-    public OpenAPI invoiceCalculatorJavaOpenAPI() {
+    public OpenAPI keyRegistryJavaOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
                         .title("Key Registry API")
