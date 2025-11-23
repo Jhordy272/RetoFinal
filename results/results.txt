@@ -1,0 +1,119 @@
+100 -> 
+Latency Stats (ms):
+   Min:                 85.85
+   Average:             94.08
+   Median:              93.27
+   P90:                 100.90
+   P95:                 102.77
+   P99:                 0.00
+   Max:                 113.09
+
+200 ->
+Latency Stats (ms):
+   Min:                 85.09
+   Average:             93.63
+   Median:              93.10
+   P90:                 99.90
+   P95:                 102.82
+   P99:                 0.00
+   Max:                 105.66
+
+300 ->
+Latency Stats (ms):
+   Min:                 85.00
+   Average:             93.30
+   Median:              92.72
+   P90:                 99.49
+   P95:                 101.00
+   P99:                 0.00
+   Max:                 105.71
+
+400 ->
+Latency Stats (ms):
+   Min:                 84.26
+   Average:             95.40
+   Median:              93.29
+   P90:                 102.87
+   P95:                 115.71
+   P99:                 0.00
+   Max:                 139.81
+
+500 ->
+Latency Stats (ms):
+   Min:                 84.12
+   Average:             94.31
+   Median:              93.28
+   P90:                 100.57
+   P95:                 103.27
+   P99:                 0.00
+   Max:                 125.69
+
+600 ->
+Latency Stats (ms):
+   Min:                 85.07
+   Average:             93.69
+   Median:              93.18
+   P90:                 98.39
+   P95:                 100.54
+   P99:                 0.00
+   Max:                 114.54
+
+700 ->
+Latency Stats (ms):
+   Min:                 83.51
+   Average:             94.66
+   Median:              93.50
+   P90:                 100.98
+   P95:                 104.56
+   P99:                 0.00
+   Max:                 126.20
+
+800 ->
+Latency Stats (ms):
+   Min:                 85.09
+   Average:             94.66
+   Median:              93.92
+   P90:                 100.11
+   P95:                 103.31
+   P99:                 0.00
+   Max:                 119.16
+
+900 ->
+Latency Stats (ms):
+   Min:                 86.16
+   Average:             93.42
+   Median:              93.15
+   P90:                 97.01
+   P95:                 98.42
+   P99:                 0.00
+   Max:                 103.80
+
+1000 ->
+Latency Stats (ms):
+   Min:                 86.12
+   Average:             101.19
+   Median:              98.43
+   P90:                 112.33
+   P95:                 127.05
+   P99:                 0.00
+   Max:                 139.27
+
+1100 ->
+Latency Stats (ms):
+   Min:                 85.64
+   Average:             122.19
+   Median:              110.76
+   P90:                 130.15
+   P95:                 146.12
+   P99:                 0.00
+   Max:                 513.18
+
+1200 ->
+Latency Stats (ms):
+   Min:                 87.77
+   Average:             135.02
+   Median:              114.30
+   P90:                 135.44
+   P95:                 425.61
+   P99:                 0.00
+   Max:                 504.39

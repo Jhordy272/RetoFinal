@@ -6,12 +6,11 @@ export const options = {
     scenarios: {
         create_keys: {
             executor: "constant-arrival-rate",
-            rate: 1200,
+            rate: 2000,
             timeUnit: "1s",
-            duration: "1s",
-            preAllocatedVUs: 1200,
-            maxVUs: 1200,
-            gracefulStop: "1s"
+            duration: "5s",
+            preAllocatedVUs: 50,
+            maxVUs: 200,
         }
     }
 };
@@ -21,28 +20,27 @@ const errorCounter = new Counter("error_count");
 const totalCounter = new Counter("total_requests");
 
 export default function () {
-    //const url = "http://public-elb-120166699.us-east-1.elb.amazonaws.com/api/keys/check-or-create";
-    const url = "http://public-elb-120166699.us-east-1.elb.amazonaws.com/api/keys/"
+    const url = "http://public-elb-120166699.us-east-1.elb.amazonaws.com/api/keys/check-or-create";
     const randomKey = Math.floor(Math.random() * 1_000_000_000).toString();
 
-
-    // const payload = JSON.stringify({
-    //     keyValue: 2+"loadtest_6_02",
-    //     accountNumber: "123456789",
-    //     ownerDocument: "123456789",
-    //     entityCode: "BA"
-    // });
+    const payload = JSON.stringify({
+        keyValue: "loadtest_6_02_" + randomKey,
+        accountNumber: "123456789",
+        ownerDocument: "123456789",
+        entityCode: "BA"
+    });
 
     const headers = { "Content-Type": "application/json" };
-
-    const res = http.get(url + "loadtest_6_02_" + randomKey, { headers });
+    const res = http.post(url, payload, { headers });
 
     totalCounter.add(1);
 
+    // Define qué consideras como éxito/error
     if (res.status === 200 || res.status === 404) {
         successCounter.add(1);
     } else {
         errorCounter.add(1);
+        console.error(`Error en request: status ${res.status}`);
     }
 
     if (exec.scenario.iterationInTest % 100 === 0) {
@@ -51,14 +49,12 @@ export default function () {
 }
 
 export function handleSummary(data) {
+    // Usar los contadores customizados que registraste
+    const totalRequests = data.metrics.total_requests?.values?.count || 0;
+    const successRequests = data.metrics.success_count?.values?.count || 0;
+    const failedRequests = data.metrics.error_count?.values?.count || 0;
+
     const httpReqDuration = data.metrics.http_req_duration?.values || {};
-    const httpReqs = data.metrics.http_reqs?.values?.count || 0;
-    const httpReqFailed = data.metrics.http_req_failed?.values?.count || 0;
-
-    const totalRequests = httpReqs;
-    const failedRequests = httpReqFailed;
-    const successRequests = totalRequests - failedRequests;
-
     const min = httpReqDuration.min || 0;
     const max = httpReqDuration.max || 0;
     const avg = httpReqDuration.avg || 0;
@@ -68,6 +64,7 @@ export function handleSummary(data) {
     const p99 = httpReqDuration["p(99)"] || 0;
 
     const meetsRequirement = p95 > 0 && p95 < 200;
+    const successRate = totalRequests > 0 ? ((successRequests / totalRequests) * 100) : 0;
 
     const summary = `
 ╔════════════════════════════════════════════════════════════╗
@@ -78,11 +75,11 @@ Request Summary:
    Total Requests:      ${totalRequests}
    Successful:          ${successRequests}
    Failed:              ${failedRequests}
-   Success Rate:        ${totalRequests > 0 ? ((successRequests / totalRequests) * 100).toFixed(2) : '0.00'}%
+   Success Rate:        ${successRate.toFixed(2)}%
 
 Latency Stats (ms):
    Min:                 ${min.toFixed(2)}
-   Average:             ${avg.toFixed(2)}
+   Average:            ${avg.toFixed(2)}
    Median:              ${med.toFixed(2)}
    P90:                 ${p90.toFixed(2)}
    P95:                 ${p95.toFixed(2)}
@@ -90,9 +87,10 @@ Latency Stats (ms):
    Max:                 ${max.toFixed(2)}
 
 Requirements Check:
+   Target RPS:          200 req/sec
    Target P95 Latency:  < 200 ms
    Actual P95 Latency:  ${p95.toFixed(2)} ms
-   Status:              ${meetsRequirement ? 'PASSED' : 'FAILED'}
+   Status:              ${meetsRequirement ? '✓ PASSED' : '✗ FAILED'}
 `;
 
     return {
